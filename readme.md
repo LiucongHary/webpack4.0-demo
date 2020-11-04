@@ -283,3 +283,52 @@ weback通过babel识别es6语法 https://babeljs.io/setup
     写类库代码的时候，要使用@babel/plugin-transform-runtime 它会已闭包的形式引入，不会污染全局变量
 
 
+tree shaking
+
+只支持 ES module 模块引入
+
+    作用：只打包有用的代码
+    webpack.config.js
+    
+    plugins:[
+        ...,
+        optimization:{
+            usedExports:true // 开发环境 ； 生产环境不用写，会自动tree shaking
+        }
+    ]
+    
+    package.json
+    sideEffects:["@babel/polly-fill"] // 可以会把 @babel/polly-fill 忽略掉，因为它是挂载到window上的
+    sideEffects:false, 不需要特殊配置
+    
+
+
+
+development 和 production 模式的区分打包
+
+    package.json
+    script:{
+    	dev: "webpack-dev-server --config webpack.dev.js"
+    	build:"webpack --config webpack.prod.js"
+    }
+    
+    把开发环境配置和生产环境配置的公共代码提出来
+    在通过webpack-merge进行配置合并导出
+    
+    npm install webpack-merge -D
+    config.dev.js
+    const merge = require('webpck-merge')
+    moudule.exports = merge(配置对象1,配置对象2)
+    
+
+webpack 和 code splitting(代码分割)
+
+    npm install lodash -S  功能集合，有许多工具方法
+    
+    index.js
+    import _ from 'loadsh'
+    console.log(_.join(['a','b','c'],'***'))
+
+
+
+
